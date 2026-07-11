@@ -1,5 +1,7 @@
 # TCE — Tarik Context Engineering
 
+_Автор: Гарипов Нияз Варисович_
+
 **RU:** Уточнение задачи через 8 вопросов Тарика Шехипара + контекстный инжиниринг + генерация промпта для Codex CLI / Claude Code / Hermes с ролевой моделью NC777. Превращает сырой запрос в self-contained промпт с разметкой контекста.
 
 **EN:** Task refinement via Tarik Shehipar's 8 questions + context engineering + prompt generation for Codex CLI / Claude Code / Hermes with NC777 role model. Transforms raw requests into self-contained prompts with full context markup.

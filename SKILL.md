@@ -1,5 +1,6 @@
 ---
 name: tce
+author: Гарипов Нияз Варисович
 description: "Tarik Context Engineering — уточнение задачи через 8 вопросов Тарика Шехипара + контекстный инжиниринг + генерация промпта для Codex CLI / Claude Code / Hermes с ролевой моделью NC777. Превращает сырой запрос в self-contained промпт с разметкой контекста. / Tarik Context Engineering — refines raw requests via Tarik Shehipar's 8 questions + context engineering + prompt generation for Codex CLI / Claude Code / Hermes with NC777 role model. Methodology: https://github.com/NiiyazG/tce"
 triggers:
   - "уточни задачу"
