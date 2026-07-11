@@ -1,192 +1,35 @@
-# 🧠 TCE — Tarik Context Engineering
+# TCE — Tarik Context Engineering
 
-> **Сырой запрос → идеальный промпт для AI-кодера. Без итераций. Без «ой, забыл сказать». За 3 шага.**
+**RU:** Уточнение задачи через 8 вопросов Тарика Шехипара + контекстный инжиниринг + генерация промпта для Codex CLI / Claude Code / Hermes с ролевой моделью NC777. Превращает сырой запрос в self-contained промпт с разметкой контекста.
 
-[![MIT License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![Tarik Shehihar](https://img.shields.io/badge/метод-Тарик%20Шехипар-blueviolet)](#-8-вопросов-тарика-шехипара)
-[![Codex CLI](https://img.shields.io/badge/integration-Codex%20CLI-ff6600)](#-для-любого-ai-агента)
-[![NC777](https://img.shields.io/badge/pipeline-NC777%20v4-important)](https://github.com/NiiyazG/nc777-prompts)
-[![Context Engineering](https://img.shields.io/badge/парадигма-Context%20Engineering-00bcd4)](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
+**EN:** Task refinement via Tarik Shehipar's 8 questions + context engineering + prompt generation for Codex CLI / Claude Code / Hermes with NC777 role model. Transforms raw requests into self-contained prompts with full context markup.
 
----
+## Методология / Methodology
 
-## 💥 Знакомая ситуация?
+Основано на **8 вопросах Тарика Шехипара** для уточнения задач (Tarik Shehipar's 8-Question Framework) и **Context Engineering** — методологии подготовки контекста для AI-агентов.
 
-Вы даёте AI-кодеру задачу. Получаете **совсем не то**. Добавляете контекст — **чуть лучше**. Ещё 5 уточнений — **почти**. Через полчаса переписки хочется просто написать самому.
+Методология: https://github.com/NiiyazG/tce
 
-**Спойлер: AI здесь ни при чём. Проблема в контексте.**
-
-Каждый токен в промпте — это бюджет. Плохой контекст расходует лимит впустую. AI не читает мысли — он работает ровно с тем, что вы ему передали.
-
-**TCE** — системный метод упаковки задачи в self-contained промпт, который AI-кодер понимает с первого раза. Без переписки. Без «а ещё...». Без лишних итераций.
-
----
-
-## 🔬 Что под капотом
-
-Четыре компонента, которые превращают неструктурированный запрос в готовый промпт:
-
-| Компонент | Откуда | Что даёт |
-|-----------|--------|----------|
-| 🎯 **8 вопросов** | Тарик Шехипар | Извлекает скрытые требования, которые вы упустили |
-| 🧱 **Context Engineering** | Phil Schmid / Google DeepMind + Anthropic | Раскладывает информацию по 5 слоям — AI не путается |
-| 🤖 **Для любого AI-агента** | Codex CLI, Claude Code, Hermes Agent, Crab и другие | Универсальный формат — работает с любым кодовым агентом |
-| 🔄 **NC777 Pipeline** | [NC 777 v4](https://github.com/NiiyazG/nc777-prompts) | Ролевая дисциплина: каждый этап делает своё и не лезет в чужое |
-
----
-
-## 📋 Workflow — 30 секунд на задачу
-
-```
-ЗАПРОС → 8 ВОПРОСОВ → КОНТЕКСТНАЯ КАРТА → ПРОМПТ → AI-АГЕНТ ИСПОЛНЯЕТ
-```
-
-### Шаг 1 — 8 вопросов Тарика Шехипара
-
-Система вопросов, которые выявляют **скрытые требования**:
-
-| # | Вопрос | Что даёт |
-|---|--------|----------|
-| Q1 | **Какой конкретный результат нужен?** | Чёткое понимание того, что должно получиться |
-| Q2 | **Зачем это нужно?** | Мотивацию, контекст проблемы, подоплёку |
-| Q3 | **Как поймём, что готово?** | Чеклист приёмки — исключает споры на выходе |
-| Q4 | **Как видите архитектуру?** | Стек, подход, технические предпочтения |
-| Q5 | **С чего начнём?** | MVP, первый рабочий прототип |
-| Q6 | **Какие ресурсы нужны?** | Файлы, API, библиотеки, данные |
-| Q7 | **Где может возникнуть проблема?** | Риски, граничные случаи, узкие места |
-| Q8 | **Какой контекст передать AI?** | Предыстория, ссылки, спецификации, примеры |
-
-> **Правило:** не задаём вопрос, если ответ уже есть в запросе. Если пользователь сказал «сделай сам» — не спрашиваем, используем разумные умолчания.
-
-### Шаг 2 — Контекстный инжиниринг (5-Layer Stack)
-
-Архитектура, которую Google DeepMind и Anthropic признали **стандартом 2025–2026**:
-
-```
-┌─ Layer 1: Системный промпт ──────────────────────┐
-│  Ты — senior Python-разработчик.                 │
-│  Используешь pep8, typing, pytest.               │
-│  Без излишних сторонних зависимостей.             │
-├─ Layer 2: Память / Состояние ────────────────────┤
-│  Проект: парсер Excel → JSON. openpyxl. 340 строк │
-├─ Layer 3: Контекст / Поиск ──────────────────────┤
-│  src/parser.py — текущая логика                   │
-│  tests/test_parser.py — существующие тесты        │
-├─ Layer 4: Инструменты и API ─────────────────────┤
-│  ✅ openpyxl, pathlib, re  ❌ pandas, numpy       │
-├─ Layer 5: Формат результата ─────────────────────┤
-│  1. Модифицировать src/parser.py                  │
-│  2. Дописать тесты на новые кейсы                 │
-│  3. Показать diff                                 │
-└──────────────────────────────────────────────────┘
-```
-
-### Шаг 3 — Отправка в AI-агента
-
-Промпт готов. Можно отправлять в любого кодового агента — Codex CLI, Claude Code, Hermes Agent, Crab или другой.
+## Установка / Installation
 
 ```bash
-# Пример для Codex CLI
-ALL_PROXY=socks5h://127.0.0.1:10808 codex exec \
-  -m gpt-5.3-codex \
-  -s danger-full-access \
-  -c skip_git_repo_check=true \
-  --dangerously-bypass-approvals-and-sandbox \
-  "$(cat prompt.md)"
-
-# Пример для Claude Code
-claude -p "$(cat prompt.md)"
-
-# Пример для Hermes Agent
-# Просто скажите: «Примени TCE к этой задаче» — навык уже встроен
+# OpenClaw
+cp -r tce ~/.openclaw/workspace/skills/
+# Codex / Claude Code
+cp -r tce /path/to/agent/skills/
 ```
 
----
-
-## 🧩 Библиотека методик — всё в одном месте
-
-TCE не ограничивается Тариком. Встроена подборка лучших мировых методик:
-
-| Методика | Когда использовать | Как сочетается |
-|----------|-------------------|----------------|
-| **8Q Тарика Шехипара** | Размытая задача, новый проект | 🔟 Базовая методика |
-| **GROW** (Whitmore) | Нужно быстро сделать первый шаг | ➕ Q1→G, Q7→R, Q4→O, Q5→W |
-| **5-Layer Context Stack** | Сложная архитектура, много файлов | 🧱 Скелет контекста |
-| **Anthropic Context Engineering** | Промпт в продакшне, каждый токен на счету | 💰 Context Budgeting — экономия |
-| **SMART** | Критерии приёмки | ✅ Specific, Measurable, Achievable, Relevant, Time-bound |
-| **5W2H** | Быстрая постановка, режим «сделай сам» | 📋 What/Why/Where/When/Who/How/How much |
-| **SCQA** (Minto) | Баги, инциденты, проблемы | 🐛 Situation → Complication → Question → Answer |
-
-Подробный разбор — в [`SKILL.md`](SKILL.md#библиотека-методик).
-
----
-
-## 🔄 NC777 — ролевая разметка
-
-К каждой задаче TCE прикрепляет **ролевой конвейер** [NC777](https://github.com/NiiyazG/nc777-prompts) — операционную систему для AI-агентов:
-
-| Сложность | Конвейер | Когда |
-|-----------|----------|-------|
-| 🟢 **Простая** | Developer → QA | Один файл, менее 50 строк |
-| 🟡 **Средняя** | Prophet → Architect → Developer → QA → Cleaner | 2–5 файлов, новая функциональность |
-| 🔴 **Сложная** | Prophet → Architect → Reviewer → Developer → QA → Saboteur → Cleaner | Архитектурные изменения |
-
-Каждая роль знает свою задачу и работает в рамках своей зоны ответственности.
-
----
-
-## 🚀 Быстрый старт
-
-TCE — это **метод**, не библиотека. Чтобы применить:
-
-```bash
-# 1. Скачайте шпаргалку
-wget -O tce-prompt.md https://raw.githubusercontent.com/NiiyazG/tce/main/SKILL.md
-
-# 2. Пройдите 8 вопросов (в голове или с командой за 5 минут)
-
-# 3. Соберите Context Map по 5-слойной схеме
-
-# 4. Отправьте в любого AI-агента
-```
-
-Или просто попросите **любого AI-ассистента**: «Примени TCE к этой задаче». Если навык знаком ассистенту — он сделает всё сам.
-
----
-
-## 📁 Структура репозитория
+## Структура / Structure
 
 ```
 tce/
-├── README.md                    ← Этот файл — начать здесь
-├── SKILL.md                     ← Полная спецификация метода (370 строк)
-├── LICENSE                      ← MIT — открыто, свободно
+├── SKILL.md                        — полное описание методологии
+├── README.md                       — этот файл
 └── references/
-    └── methodology-comparison.md ← Детальное сравнение всех методик
+    └── methodology-comparison.md   — сравнение подходов
 ```
 
----
+## Триггеры / Triggers
 
-## 🧠 Почему это работает
-
-1. **Вопросы Тарика** извлекают требования, которые вы могли упустить
-2. **5-Layer Stack** распределяет информацию по слоям — AI обрабатывает её эффективно
-3. **NC777** добавляет ролевую дисциплину — каждый этап работает в своих границах
-4. **Context Budgeting** экономит токены — AI не захлёбывается в избыточном контексте
-
-> *«Контекстный инжиниринг — навык, определяющий AI-разработку 2026 года»* — **Phil Schmid, Google DeepMind**
-
----
-
-## 📄 Лицензия
-
-MIT © [Niyaz Garipov](https://github.com/NiiyazG)
-
----
-
-## 🌐 Полезные ссылки
-
-- [Anthropic: Effective Context Engineering for AI Agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
-- [Taskade: Context Engineering Field Guide 2026](https://www.taskade.com/blog/context-engineering)
-- [Awesome Context Engineering](https://github.com/Meirtz/Awesome-Context-Engineering)
-- [NC 777 — Role Operating System](https://github.com/NiiyazG/nc777-prompts)
+- Русский: уточни задачу, контекстный инжиниринг, сделай промпт для кодекса, тарик, tce
+- English: tce, tarik, 8 questions, context engineering, prepare task for codex
